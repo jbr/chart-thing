@@ -26,7 +26,7 @@ export function debug(
 }
 
 export function format(...xs: (Vector | number)[]): string[] {
-  return xs.map(x =>
+  return xs.map((x) =>
     typeof x === "number"
       ? x.toString()
       : `(${x.x.toFixed(3)},${x.y.toFixed(3)})`

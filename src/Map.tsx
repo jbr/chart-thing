@@ -1,15 +1,15 @@
-import React from 'react';
-import LineSegments from './LineSegments';
-import Tiles, { TileProvider } from './Tiles';
-import SizedSVG from './SizedSVG';
-import ColorLegend from './ColorLegend';
-import MapCoordinates, { MapCoordinatesProps } from './MapCoordinates';
-import { TypedAccessor } from './common';
-import Vector, * as vector from './vector';
-import { GestureEvent } from './useMapGestures';
-import CoordinateContext from './CoordinateContext';
-import { Hover, HoverLabel } from './Hover';
-import { ColorScheme } from './colors';
+import React from "react";
+import LineSegments from "./LineSegments";
+import Tiles, { TileProvider } from "./Tiles";
+import SizedSVG from "./SizedSVG";
+import ColorLegend from "./ColorLegend";
+import MapCoordinates, { MapCoordinatesProps } from "./MapCoordinates";
+import { TypedAccessor } from "./common";
+import Vector, * as vector from "./vector";
+import { GestureEvent } from "./useMapGestures";
+import CoordinateContext from "./CoordinateContext";
+import { Hover, HoverLabel } from "./Hover";
+import { ColorScheme } from "./colors";
 
 interface MapProps<T> {
   children?: React.ReactNode;
@@ -22,7 +22,7 @@ interface MapProps<T> {
   hoverLabel?: HoverLabel<T>;
   outline?: boolean;
   legend?: boolean;
-  coordinateTransform?: MapCoordinatesProps<T>['coordinateTransform'];
+  coordinateTransform?: MapCoordinatesProps<T>["coordinateTransform"];
   wmpX: TypedAccessor<T, number>;
   wmpY: TypedAccessor<T, number>;
   color?: TypedAccessor<T, number>;
@@ -37,7 +37,7 @@ export function ZoomButtons({ zoomBy }: { zoomBy(z: number): void }) {
       evt.preventDefault();
       zoomBy(1.2);
     },
-    [zoomBy],
+    [zoomBy]
   );
   const zoomOut = React.useCallback(
     (evt) => {
@@ -45,7 +45,7 @@ export function ZoomButtons({ zoomBy }: { zoomBy(z: number): void }) {
       evt.preventDefault();
       zoomBy(1 / 1.2);
     },
-    [zoomBy],
+    [zoomBy]
   );
 
   const cancel = React.useCallback(
@@ -53,7 +53,7 @@ export function ZoomButtons({ zoomBy }: { zoomBy(z: number): void }) {
       evt.stopPropagation();
       evt.preventDefault();
     },
-    [],
+    []
   );
 
   return (
@@ -129,7 +129,7 @@ type Action = Partial<OffsetState> | ((s: OffsetState) => Partial<OffsetState>);
 
 function reducer(state: OffsetState, action: Action): OffsetState {
   const partialState: Partial<OffsetState> =
-    typeof action === 'function' ? action(state) : action;
+    typeof action === "function" ? action(state) : action;
   return { ...state, ...partialState };
 }
 
@@ -161,12 +161,12 @@ export function Map<T>(props: MapProps<T>) {
         dynamicOffset: { x: 0, y: 0 },
         staticOffset: vector.add(
           staticOffset,
-          vector.divide(dynamicOffset, dynamicZoom * staticZoom),
+          vector.divide(dynamicOffset, dynamicZoom * staticZoom)
         ),
         dynamicZoom: 1,
         staticZoom: dynamicZoom * staticZoom,
       })),
-    [dispatch],
+    [dispatch]
   );
 
   const delayedReconciliation = React.useCallback(
@@ -182,7 +182,7 @@ export function Map<T>(props: MapProps<T>) {
         });
       }, n);
     },
-    [reconcile],
+    [reconcile]
   );
 
   const onDrag = React.useCallback(
@@ -198,22 +198,22 @@ export function Map<T>(props: MapProps<T>) {
         delayedReconciliation(50);
       }
     },
-    [dispatch, delayedReconciliation],
+    [dispatch, delayedReconciliation]
   );
 
   const onZoom = React.useCallback(
     (
-      event: (GestureEvent & ({ zoom: number } | { zoomTo: number })) | null,
+      event: (GestureEvent & ({ zoom: number } | { zoomTo: number })) | null
     ) => {
       if (event) {
         dispatch(({ dynamicZoom }) => ({
           dynamicZoom:
-            'zoomTo' in event ? event.zoomTo : dynamicZoom * event.zoom,
+            "zoomTo" in event ? event.zoomTo : dynamicZoom * event.zoom,
         }));
         delayedReconciliation();
       }
     },
-    [dispatch, delayedReconciliation],
+    [dispatch, delayedReconciliation]
   );
 
   const zoomBy = React.useCallback(
@@ -223,27 +223,28 @@ export function Map<T>(props: MapProps<T>) {
       }));
       delayedReconciliation();
     },
-    [dispatch, delayedReconciliation],
+    [dispatch, delayedReconciliation]
   );
   const [hover, setHover] = React.useState<GestureEvent | null>(null);
   const onHover = React.useCallback(
     (evt: GestureEvent | null) => {
       setHover(evt);
     },
-    [setHover],
+    [setHover]
   );
   const transform = ({ width, height }: { width: number; height: number }) =>
     [
       dynamicZoom !== 1
-        ? `translate(${((1 - dynamicZoom) * width) / 2}, ${((1 - dynamicZoom) * height) / 2
-        }) scale(${dynamicZoom},${dynamicZoom})`
-        : '',
+        ? `translate(${((1 - dynamicZoom) * width) / 2}, ${
+            ((1 - dynamicZoom) * height) / 2
+          }) scale(${dynamicZoom},${dynamicZoom})`
+        : "",
       dynamicOffset.x || dynamicOffset.y
         ? `translate(${dynamicOffset.x * width}, ${dynamicOffset.y * height})`
-        : '',
+        : "",
     ]
       .filter(Boolean)
-      .join(' ');
+      .join(" ");
 
   const moving = dynamicZoom !== 1 || dynamicOffset.x || dynamicOffset.y;
 

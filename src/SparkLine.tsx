@@ -1,12 +1,13 @@
-import React from 'react';
-import SizedSVG from './SizedSVG';
-import LineSegments from './LineSegments';
-import Coordinates from './Coordinates';
-import YAxis from './YAxis';
-import { ColorScheme } from './colors';
-import { NumericAttribute, TypedAccessor } from './common';
-import { HoverLabel, Hover } from './Hover';
-import { GestureEvent } from './useMapGestures';
+import React from "react";
+import SizedSVG from "./SizedSVG";
+import LineSegments from "./LineSegments";
+import Coordinates from "./Coordinates";
+import YAxis from "./YAxis";
+import { ColorScheme } from "./colors";
+import { NumericAttribute, TypedAccessor } from "./common";
+import { HoverLabel, Hover } from "./Hover";
+import { GestureEvent } from "./useMapGestures";
+import { Title, getDimension } from "./index";
 
 interface SparkLineChartProps<T> {
   x: NumericAttribute<T>;

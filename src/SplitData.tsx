@@ -1,6 +1,6 @@
-import React from 'react';
-import DataContext, { useDataArray } from './DataContext';
-import { attributeValue, TypedAccessor } from './common';
+import React from "react";
+import DataContext, { useDataArray } from "./DataContext";
+import { attributeValue, TypedAccessor } from "./common";
 export function SplitData<T>({
   on,
   children,
@@ -24,14 +24,14 @@ export function SplitData<T>({
           }
         },
 
-        [] as T[][],
+        [] as T[][]
       ),
-    [allData, on],
+    [allData, on]
   );
 
   return split.map((section, index) => (
     <DataContext.Provider key={index} value={section}>
-      {typeof children === 'function'
+      {typeof children === "function"
         ? children(index, section, split)
         : children}
     </DataContext.Provider>

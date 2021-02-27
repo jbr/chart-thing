@@ -1,6 +1,6 @@
-import React from 'react';
-import _ from 'lodash';
-import { Stats } from './common';
+import React from "react";
+import _ from "lodash";
+import { Stats } from "./common";
 
 interface DimensionObject {
   [index: string]: Partial<DimensionDefinition>;
@@ -19,10 +19,10 @@ export interface DimensionDefinition {
 
 function defaultDimension(dimensionName: string): DimensionDefinition {
   return {
-    displayLabel: (dimensionName || '')
-      .replace(/([a-z])([A-Z])/g, '$1 $2')
+    displayLabel: (dimensionName || "")
+      .replace(/([a-z])([A-Z])/g, "$1 $2")
       .toLowerCase(),
-    units: '',
+    units: "",
     labelValue(value: number) {
       return Math.round(value).toString();
     },
@@ -31,17 +31,17 @@ function defaultDimension(dimensionName: string): DimensionDefinition {
 }
 
 export function getDimension<T>(
-  dimensionName: Dimension<T> | Function,
+  dimensionName: Dimension<T> | Function
 ): DimensionDefinition {
   const allDimensions = React.useContext(DimensionsContext);
-  if (typeof dimensionName === 'string' && dimensionName in allDimensions) {
+  if (typeof dimensionName === "string" && dimensionName in allDimensions) {
     return {
       ...defaultDimension(dimensionName as string),
       ...allDimensions[dimensionName as string],
     };
   } else {
     const name =
-      typeof dimensionName === 'function'
+      typeof dimensionName === "function"
         ? dimensionName.name
         : (dimensionName as string);
     return defaultDimension(name);
@@ -51,21 +51,21 @@ export function getDimension<T>(
 export const dimensionsWithLabels = (...arr: string[]) =>
   _.flatten(arr).reduce(
     (o, k) => ({ ...o, [k]: getDimension(k).displayLabel }),
-    {},
+    {}
   );
 
 export type Dimension<T> = keyof T;
 
 export const SUMMARY_STATS = [
-  'mean',
-  'min',
-  'max',
-  'variance',
-  'stdev',
-  'range',
-  'median',
-  'count',
-  'sum',
+  "mean",
+  "min",
+  "max",
+  "variance",
+  "stdev",
+  "range",
+  "median",
+  "count",
+  "sum",
 ] as const;
 
 export type SummaryStat = typeof SUMMARY_STATS[number];

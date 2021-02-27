@@ -14,9 +14,9 @@ export default function useLinearRegression<T>(): LinearRegression<T> {
   const data = useDataArray<T>();
 
   const result = React.useMemo(() => {
-    const dd: [number, number][] = data.map(d => [
+    const dd: [number, number][] = data.map((d) => [
       xStatValue(d),
-      yStatValue(d)
+      yStatValue(d),
     ]);
 
     return regression.linear(dd, { precision: 10 });

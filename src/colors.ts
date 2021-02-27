@@ -18,7 +18,7 @@ export const colorSchemes = {
   cubehelixDefault: true,
   rainbow: true,
   sinebow: true,
-  turbo: true
+  turbo: true,
 };
 
 export const DEFAULT_COLOR_SCHEME = "turbo";

@@ -17,17 +17,10 @@ export default function GradientBar({
   height,
   min = 0,
   max = 1,
-  colorScale
+  colorScale,
 }: GradientBarProps) {
   const gradientId = React.useMemo(
-    () =>
-      [
-        min,
-        max,
-        Math.random()
-          .toString()
-          .slice(2)
-      ].join("-"),
+    () => [min, max, Math.random().toString().slice(2)].join("-"),
     [min, max]
   );
   if (!colorScale) return null;

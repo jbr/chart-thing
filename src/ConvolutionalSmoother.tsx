@@ -1,6 +1,6 @@
-import React from 'react';
-import DataContext, { useDataArray } from './DataContext';
-import { attributeNumber, NumericAttribute } from './common';
+import React from "react";
+import DataContext, { useDataArray } from "./DataContext";
+import { attributeNumber, NumericAttribute } from "./common";
 
 export const functions: {
   gaussian: ConvolutionFunction;
@@ -34,16 +34,16 @@ const pad = (padSize: number, data: Array<number>): Array<number> => [
 ];
 
 const cache = (fn: ConvolutionFunction, n: number, size: number) => {
-  if (typeof fn.cache !== 'object') fn.cache = {};
+  if (typeof fn.cache !== "object") fn.cache = {};
   if (!(size in fn.cache)) fn.cache[size] = [];
-  if (typeof fn.cache[size][n] === 'undefined') fn.cache[size][n] = fn(n, size);
+  if (typeof fn.cache[size][n] === "undefined") fn.cache[size][n] = fn(n, size);
   return fn.cache[size][n];
 };
 
 const convolve = (
   data: Array<number>,
   fn: ConvolutionFunction,
-  size: number,
+  size: number
 ) => {
   const sums = new Array(data.length).fill(0);
   for (let i = 0; i < data.length; i++)
@@ -63,21 +63,21 @@ export function smooth<T>(
   on: NumericAttribute<T>,
   as: NumericAttribute<T>,
   fnOrFnName: ConvolutionFunction | ConvolutionFunctionName,
-  size: number,
+  size: number
 ) {
   const padSize = size * 3;
   const fn: ConvolutionFunction =
-    typeof fnOrFnName === 'function' ? fnOrFnName : functions[fnOrFnName];
+    typeof fnOrFnName === "function" ? fnOrFnName : functions[fnOrFnName];
 
   if (size === 0) return [];
   const inputData = pad(
     padSize,
-    data.map((datum) => attributeNumber(datum, on)),
+    data.map((datum) => attributeNumber(datum, on))
   );
 
   const outputData = convolve(inputData, fn, size).slice(
     padSize,
-    data.length + padSize,
+    data.length + padSize
   );
 
   return data.map((datum, i) => ({
@@ -98,7 +98,7 @@ export function ConvolutionalSmoother<T>({
   children,
   on,
   as = on,
-  fn: fnOrFnName = 'gaussian',
+  fn: fnOrFnName = "gaussian",
   size,
 }: ConvolutionalSmootherProps<T>) {
   const data = useDataArray<T>();
@@ -114,7 +114,7 @@ export function ConvolutionalSmoother<T>({
 
   const mappedData: T[] = React.useMemo(
     () => smooth(data, on, as, fnOrFnName, size),
-    [data, as, on, fnOrFnName, size],
+    [data, as, on, fnOrFnName, size]
   );
 
   if (size === 0) {

@@ -1,15 +1,15 @@
-import * as color from 'd3-scale-chromatic';
-import _ from 'lodash';
-import React from 'react';
-import { attributeNumber, attrScale, NumericAttribute, Scale } from './common';
-import CoordinateContext from './CoordinateContext';
-import { buildScale } from './common';
-import DataContext, { useDataArray } from './DataContext';
-import SizedSVG from './SizedSVG';
-import Title from './Title';
-import XAxis from './XAxis';
-import YAxis from './YAxis';
-import { smooth } from './ConvolutionalSmoother';
+import * as color from "d3-scale-chromatic";
+import _ from "lodash";
+import React from "react";
+import { attributeNumber, attrScale, NumericAttribute, Scale } from "./common";
+import CoordinateContext from "./CoordinateContext";
+import { buildScale } from "./common";
+import DataContext, { useDataArray } from "./DataContext";
+import SizedSVG from "./SizedSVG";
+import Title from "./Title";
+import XAxis from "./XAxis";
+import YAxis from "./YAxis";
+import { smooth } from "./ConvolutionalSmoother";
 
 interface RibbonChartProps<T> {
   x: NumericAttribute<T>;
@@ -42,11 +42,11 @@ const opacityForPercentile = (n: number) => {
 const percentiles = _.range(1, 100, 2);
 
 function chooseBinWidth<T>(xStatScale: Scale<T>) {
-  if (xStatScale.scaleAttr === 'gradePerMi') {
+  if (xStatScale.scaleAttr === "gradePerMi") {
     return 50;
-  } else if (xStatScale.scaleAttr === 'angle') {
+  } else if (xStatScale.scaleAttr === "angle") {
     return 0.5;
-  } else if (typeof xStatScale.stdev === 'number') {
+  } else if (typeof xStatScale.stdev === "number") {
     return (3.5 * xStatScale.stdev) / Math.pow(xStatScale.count, 1 / 3);
   }
   return xStatScale.range / 20;
@@ -56,17 +56,17 @@ function weightedPercentile<T>(
   arr: T[],
   percent: number,
   attribute: NumericAttribute<T>,
-  weightAttribute: NumericAttribute<T>,
+  weightAttribute: NumericAttribute<T>
 ) {
   const sorted = _.sortBy(
     arr.map((d) => ({
       ...d,
       weightForPercentile: attributeNumber(d, weightAttribute),
     })),
-    (d) => attributeNumber(d, attribute),
+    (d) => attributeNumber(d, attribute)
   );
 
-  const total = _.sumBy(sorted, 'weightForPercentile');
+  const total = _.sumBy(sorted, "weightForPercentile");
   const fractional = (total * percent) / 100;
   let sum = 0;
   for (let i = 0; i < sorted.length; i++) {
@@ -99,7 +99,7 @@ export function Percentiles<T>({
 
   const start: Bin<T>[] = React.useMemo(
     () => _.range(0, xBins).map((xBin) => ({ xBin, data: [] })),
-    [xBins],
+    [xBins]
   );
 
   const bins: Bin<T>[] = React.useMemo(
@@ -108,15 +108,15 @@ export function Percentiles<T>({
         points.reduce((bins, p) => {
           const xValue = xStatScale(p);
 
-          if (typeof xValue !== 'number' || !Number.isFinite(xValue))
+          if (typeof xValue !== "number" || !Number.isFinite(xValue))
             return bins;
 
           const xBin = _.clamp(Math.floor(xValue * xBins), 0, xBins - 1);
           bins[xBin].data.push(p);
           return bins;
-        }, start),
+        }, start)
       ),
-    [points, xBins, xStatScale, start],
+    [points, xBins, xStatScale, start]
   );
 
   const data: BinWithPercentile[] = bins.flatMap((bin) => {
@@ -130,18 +130,18 @@ export function Percentiles<T>({
     //    else return [];
   });
 
-  const actualXStatScale = attrScale<BinWithPercentile>(data, 'x');
+  const actualXStatScale = attrScale<BinWithPercentile>(data, "x");
 
   const xScale = buildScale(actualXStatScale, width);
-  const yStatScale = attrScale<BinWithPercentile>(data, 'y');
+  const yStatScale = attrScale<BinWithPercentile>(data, "y");
   const yScale = buildScale(yStatScale, height, true);
 
   const colorScale = (d: BinWithPercentile) =>
-    colorForPercentile(attributeNumber(d, 'percentile'));
+    colorForPercentile(attributeNumber(d, "percentile"));
 
   const groupedByPercentile = _.mapValues(
-    _.groupBy(data, 'percentile'),
-    (sequence) => smooth<BinWithPercentile>(sequence, 'y', 'y', 'gaussian', 1),
+    _.groupBy(data, "percentile"),
+    (sequence) => smooth<BinWithPercentile>(sequence, "y", "y", "gaussian", 1)
   );
 
   return (
@@ -165,7 +165,7 @@ export function Percentiles<T>({
           const percentileGroup = _.sortBy(groupedByPercentile[p], xScale);
           const nextPercentileGroup = _.sortBy(
             groupedByPercentile[nextPercentile],
-            xScale,
+            xScale
           ).reverse();
           return (
             <polygon
@@ -173,7 +173,7 @@ export function Percentiles<T>({
               key={`${p}-${nextPercentile}`}
               points={[...percentileGroup, ...nextPercentileGroup]
                 .map((p) => `${xScale(p)}, ${yScale(p)}`)
-                .join(' ')}
+                .join(" ")}
               fill={colorForPercentile((p + nextPercentile) / 2)}
               opacity={opacityForPercentile((p + nextPercentile) / 2)}
               stroke="none"

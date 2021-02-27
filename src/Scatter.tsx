@@ -1,16 +1,16 @@
-import React from 'react';
-import { useDataArray } from './DataContext';
-import SizedSVG from './SizedSVG';
-import CoordinateContext from './CoordinateContext';
-import Coordinates from './Coordinates';
-import ColorLegend from './ColorLegend';
-import Title from './Title';
-import XAxis from './XAxis';
-import YAxis from './YAxis';
-import { NumericAttribute, TypedAccessor } from './common';
-import { ColorScheme } from './colors';
-import { HoverLabel, Hover } from './Hover';
-import { GestureEvent } from './useMapGestures';
+import React from "react";
+import { useDataArray } from "./DataContext";
+import SizedSVG from "./SizedSVG";
+import CoordinateContext from "./CoordinateContext";
+import Coordinates from "./Coordinates";
+import ColorLegend from "./ColorLegend";
+import Title from "./Title";
+import XAxis from "./XAxis";
+import YAxis from "./YAxis";
+import { NumericAttribute, TypedAccessor } from "./common";
+import { ColorScheme } from "./colors";
+import { HoverLabel, Hover } from "./Hover";
+import { GestureEvent } from "./useMapGestures";
 
 function opacityForSize(size: number) {
   if (size < 1000) {
@@ -39,7 +39,7 @@ export function PointCircles<T>() {
   const points = useDataArray<T>();
 
   if (!xScale || !yScale)
-    throw new Error('scatter cannot be called without x and y scales');
+    throw new Error("scatter cannot be called without x and y scales");
 
   return (
     <>
@@ -49,7 +49,7 @@ export function PointCircles<T>() {
           cx={xScale(p) as number}
           cy={yScale(p) as number}
           opacity={opacityForSize(points.length)}
-          fill={colorScale ? colorScale(p) : 'black'}
+          fill={colorScale ? colorScale(p) : "black"}
           r={radiusForSize(points.length)}
           stroke="none"
         />

@@ -1,9 +1,9 @@
-import React from 'react';
-import CoordinateContext from './CoordinateContext';
-import { useDataArray } from './DataContext';
-import { attributeValue, TypedAccessor } from './common';
-import chroma from 'chroma-js';
-import _ from 'lodash';
+import React from "react";
+import CoordinateContext from "./CoordinateContext";
+import { useDataArray } from "./DataContext";
+import { attributeValue, TypedAccessor } from "./common";
+import chroma from "chroma-js";
+import _ from "lodash";
 
 const ANGLE_RESOLUTION = 5;
 
@@ -13,14 +13,14 @@ function last<T>(arr: T[]): T {
 
 const dissimilarColors = (
   { color1, color2, distance }: SegmentPoint,
-  colorResolution: number,
+  colorResolution: number
 ) => {
   if (color1 === color2) {
     return false;
   } else if (color1 && color2) {
     const diff = Math.min(
       chroma.deltaE(color1, color2),
-      chroma.distance(color1, color2),
+      chroma.distance(color1, color2)
     );
     const gradient = diff * distance;
     return gradient > colorResolution;
@@ -28,9 +28,9 @@ const dissimilarColors = (
 };
 
 const gradientName = ({ color1, color2 }: SegmentPoint) =>
-  `gradient-${color1.replace(/[()#, ]+/g, '-')}-${color2.replace(
+  `gradient-${color1.replace(/[()#, ]+/g, "-")}-${color2.replace(
     /[()#, ]+/g,
-    '-',
+    "-"
   )}`;
 
 interface LineSegmentsProps<T> {
@@ -66,7 +66,7 @@ export default function LineSegments<T>(props: LineSegmentsProps<T>) {
   } = props;
   const points = useDataArray<T>();
   const { xScale, yScale, colorScale, width, height } = React.useContext(
-    CoordinateContext,
+    CoordinateContext
   );
 
   if (!xScale || !yScale) throw new Error();
@@ -77,19 +77,19 @@ export default function LineSegments<T>(props: LineSegmentsProps<T>) {
         (
           compressed: (SegmentPoint | SegmentPoint[])[],
           point: T,
-          index: number,
+          index: number
         ) => {
           const x = xScale(point);
           const y = yScale(point);
 
           if (
-            typeof x !== 'number' ||
+            typeof x !== "number" ||
             !Number.isFinite(x) ||
-            typeof y !== 'number' ||
+            typeof y !== "number" ||
             !Number.isFinite(y)
           )
             return compressed;
-          const color = colorScale ? colorScale(point) : 'black';
+          const color = colorScale ? colorScale(point) : "black";
           if (compressed.length === 0)
             return [
               {
@@ -112,7 +112,7 @@ export default function LineSegments<T>(props: LineSegmentsProps<T>) {
             : lastCompressed;
 
           const distance = Math.sqrt(
-            Math.pow(x - lastPoint.x, 2) + Math.pow(y - lastPoint.y, 2),
+            Math.pow(x - lastPoint.x, 2) + Math.pow(y - lastPoint.y, 2)
           );
 
           const continuous = continuity
@@ -156,7 +156,7 @@ export default function LineSegments<T>(props: LineSegmentsProps<T>) {
               distance >= resolutionForThisPoint ||
               (lastPoint.angle &&
                 Math.abs(lastPoint.angle - angle) >=
-                angleResolutionForThisPoint));
+                  angleResolutionForThisPoint));
 
           if (keep) {
             if (
@@ -175,7 +175,7 @@ export default function LineSegments<T>(props: LineSegmentsProps<T>) {
 
           return compressed;
         },
-        [] as SegmentPoint[],
+        [] as SegmentPoint[]
       ),
     [
       points,
@@ -188,14 +188,14 @@ export default function LineSegments<T>(props: LineSegmentsProps<T>) {
       continuity,
       strokeWidth,
       colorResolution,
-    ],
+    ]
   );
 
   const gradients = React.useMemo(
     () =>
       _.uniqBy(
         compressed
-          .filter(function(c): c is SegmentPoint {
+          .filter(function (c): c is SegmentPoint {
             return !Array.isArray(c);
           })
           .map((c: SegmentPoint) => ({
@@ -204,9 +204,9 @@ export default function LineSegments<T>(props: LineSegmentsProps<T>) {
             color2: c.color2,
           }))
           .filter((g) => g.color1 !== g.color2),
-        'name',
+        "name"
       ),
-    [compressed],
+    [compressed]
   );
 
   return React.useMemo(
@@ -226,8 +226,8 @@ export default function LineSegments<T>(props: LineSegmentsProps<T>) {
               strokeLinejoin="round"
               d={`m ${compressed
                 .flat()
-                .map((p) => [p.x, p.y].join(','))
-                .join(' L ')}`}
+                .map((p) => [p.x, p.y].join(","))
+                .join(" L ")}`}
               fill="none"
               strokeWidth={strokeWidth + 3}
               stroke="rgba(0,0,0,0.5)"
@@ -257,8 +257,8 @@ export default function LineSegments<T>(props: LineSegmentsProps<T>) {
             return (
               <path
                 strokeLinejoin="round"
-                key={point.map((p) => p.index).join('-')}
-                d={`m ${point.map((p) => [p.x, p.y].join(',')).join(' L ')}`}
+                key={point.map((p) => p.index).join("-")}
+                d={`m ${point.map((p) => [p.x, p.y].join(",")).join(" L ")}`}
                 fill="none"
                 strokeWidth={strokeWidth}
                 stroke={point[0].color1}
@@ -318,6 +318,6 @@ export default function LineSegments<T>(props: LineSegmentsProps<T>) {
       strokeWidth,
       gradients,
       outline,
-    ],
+    ]
   );
 }

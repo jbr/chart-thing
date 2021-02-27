@@ -10,14 +10,14 @@ export function FilledPath<T>(attributes?: React.SVGProps<SVGPathElement>) {
     xScale,
     yScale,
     colorStatScale,
-    colorScale
+    colorScale,
   } = React.useContext(CoordinateContext);
   if (!xScale || !yScale) throw new Error();
 
   if (!colorScale) return null;
   if (!width) return null;
 
-  const d = points.map(p => `${xScale(p)}, ${yScale(p)}`).join(" L ");
+  const d = points.map((p) => `${xScale(p)}, ${yScale(p)}`).join(" L ");
 
   const gradientId = "density";
   return (
@@ -29,7 +29,8 @@ export function FilledPath<T>(attributes?: React.SVGProps<SVGPathElement>) {
               key={stop}
               offset={`${stop}%`}
               stopColor={colorScale({
-                effort: colorStatScale.min + colorStatScale.range * (stop / 100)
+                effort:
+                  colorStatScale.min + colorStatScale.range * (stop / 100),
               })}
             />
           ))}

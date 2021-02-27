@@ -1,11 +1,11 @@
-import React from 'react';
-import { attributeValue, TypedAccessor } from './common';
-import _ from 'lodash';
+import React from "react";
+import { attributeValue, TypedAccessor } from "./common";
+import _ from "lodash";
 export const DataContext = React.createContext<unknown>([]);
 export const Data = DataContext.Provider;
 
 function isStringIndexed(d: unknown): d is { [index: string]: unknown } {
-  return typeof d === 'object' && !Array.isArray(d);
+  return typeof d === "object" && !Array.isArray(d);
 }
 
 export function useDataObject(): { [index: string]: unknown } | null {
@@ -26,7 +26,7 @@ export function useDataDimensions<T>(): string[] {
     return Object.keys(data[0]).filter(
       (k) =>
         data[0][k as keyof T] !== null &&
-        typeof data[0][k as keyof T] !== 'undefined',
+        typeof data[0][k as keyof T] !== "undefined"
     );
   } else {
     return [];
@@ -46,7 +46,7 @@ export const DataFrame = ({
     const data = allData[part] as unknown[];
     return (
       <DataContext.Provider value={data}>
-        {typeof children === 'function' ? children(data) : children}
+        {typeof children === "function" ? children(data) : children}
       </DataContext.Provider>
     );
   } else {

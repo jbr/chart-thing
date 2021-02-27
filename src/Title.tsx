@@ -1,8 +1,12 @@
-import React from 'react';
-import { getDimension } from './Dimensions';
-import CoordinateContext from './CoordinateContext';
+import React from "react";
+import { getDimension } from "./Dimensions";
+import CoordinateContext from "./CoordinateContext";
 
-export default function Title() {
+interface TitleProps {
+  children?: React.ReactNode;
+}
+
+export function Title(props: TitleProps) {
   const {
     x,
     y,
@@ -15,29 +19,30 @@ export default function Title() {
   const xDimension = getDimension(x as string);
   const yDimension = getDimension(y as string);
 
-  if (width < 350) {
-    return (
-      <text
-        x={-leftPad / 2}
-        y={-topPad / 2}
-        textAnchor="start"
-        className="chart-title"
-      >
-        {yDisplayLabel || yDimension.displayLabel} vs{' '}
-        {xDisplayLabel || xDimension.displayLabel}
-      </text>
-    );
-  } else {
-    return (
-      <text
-        x={width / 2}
-        y={-topPad / 2}
-        textAnchor="middle"
-        className="chart-title"
-      >
-        {yDisplayLabel || yDimension.displayLabel} vs{' '}
-        {xDisplayLabel || xDimension.displayLabel}
-      </text>
-    );
-  }
+  const text =
+    props.children ||
+    `${yDisplayLabel || yDimension.displayLabel} vs ${
+      xDisplayLabel || xDimension.displayLabel
+    }`;
+
+  return width < 350 ? (
+    <text
+      x={-leftPad / 2}
+      y={-topPad / 2}
+      textAnchor="start"
+      className="chart-title"
+    >
+      {text}
+    </text>
+  ) : (
+    <text
+      x={width / 2}
+      y={-topPad / 2}
+      textAnchor="middle"
+      className="chart-title"
+    >
+      {text}
+    </text>
+  );
 }
+export default Title;

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import {
   attrStats,
   padRange,
@@ -6,11 +6,11 @@ import {
   attributeNumber,
   Stats,
   TypedAccessor,
-} from './common';
-import { useDataArray } from './DataContext';
-import CoordinateContext, { CoordinateContextValue } from './CoordinateContext';
-import { ColorScheme, DEFAULT_COLOR_SCHEME } from './colors';
-import { buildColorCoordinate } from './Coordinates';
+} from "./common";
+import { useDataArray } from "./DataContext";
+import CoordinateContext, { CoordinateContextValue } from "./CoordinateContext";
+import { ColorScheme, DEFAULT_COLOR_SCHEME } from "./colors";
+import { buildColorCoordinate } from "./Coordinates";
 
 export interface MapCoordinatesProps<T> {
   color?: TypedAccessor<T, number>;
@@ -22,7 +22,7 @@ export interface MapCoordinatesProps<T> {
   zoom: number;
   offset: { x: number; y: number };
   coordinateTransform?: (
-    coordinates: CoordinateContextValue,
+    coordinates: CoordinateContextValue
   ) => Partial<CoordinateContextValue>;
 }
 
@@ -97,13 +97,13 @@ export function MapCoordinates<T>(props: MapCoordinatesProps<T>) {
       Object.assign(
         (point: T) => {
           const scaled = scaleTo(attributeNumber(point, wmpX), xRange);
-          if (typeof scaled === 'number') return scaled * width;
+          if (typeof scaled === "number") return scaled * width;
           else return 0;
         },
         xRange,
-        { scaleAttr: wmpX },
+        { scaleAttr: wmpX }
       ),
-    [xRange, width, wmpX],
+    [xRange, width, wmpX]
   );
 
   const yScale = React.useMemo(
@@ -111,13 +111,13 @@ export function MapCoordinates<T>(props: MapCoordinatesProps<T>) {
       Object.assign(
         (point: T) => {
           const scaled = scaleTo(attributeNumber(point, wmpY), yRange);
-          if (typeof scaled === 'number') return scaled * height;
+          if (typeof scaled === "number") return scaled * height;
           else return 0;
         },
         yRange,
-        { scaleAttr: wmpY },
+        { scaleAttr: wmpY }
       ),
-    [yRange, height, wmpY],
+    [yRange, height, wmpY]
   );
 
   const colorCoordinate = React.useMemo(
@@ -128,7 +128,7 @@ export function MapCoordinates<T>(props: MapCoordinatesProps<T>) {
         colorScheme,
         data: points,
       }),
-    [explicitColorScale, color, colorScheme, points],
+    [explicitColorScale, color, colorScheme, points]
   );
 
   const coordinates: CoordinateContextValue = React.useMemo(() => {

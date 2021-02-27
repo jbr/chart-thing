@@ -1,10 +1,10 @@
-import _ from 'lodash';
-import React from 'react';
-import { attrScale, attrStats, NumericAttribute, Stats } from './common';
-import { ColorScheme } from './colors';
-import CoordinateContext from './CoordinateContext';
-import { buildColorCoordinate } from './Coordinates';
-import DataContext, { useDataArray } from './DataContext';
+import _ from "lodash";
+import React from "react";
+import { attrScale, attrStats, NumericAttribute, Stats } from "./common";
+import { ColorScheme } from "./colors";
+import CoordinateContext from "./CoordinateContext";
+import { buildColorCoordinate } from "./Coordinates";
+import DataContext, { useDataArray } from "./DataContext";
 
 interface BinStatsProps<T> {
   children?: React.ReactNode;
@@ -38,18 +38,18 @@ export default function BinStats<T>({
   const xBinWidth = Math.min(
     xStatScale.range / 20,
     Math.max(
-      typeof xStatScale.stdev === 'number'
+      typeof xStatScale.stdev === "number"
         ? (3.5 * xStatScale.stdev) / Math.pow(points.length, 1 / 3)
         : xStatScale.range / 20,
-      xStatScale.range / 100,
-    ),
+      xStatScale.range / 100
+    )
   );
 
   const yBinWidth = Math.max(
-    typeof yStatScale.stdev === 'number'
+    typeof yStatScale.stdev === "number"
       ? (3.5 * yStatScale.stdev) / Math.pow(points.length, 1 / 3)
       : yStatScale.range / 20,
-    yStatScale.range / 100,
+    yStatScale.range / 100
   );
 
   const xBins = Math.floor(xStatScale.range / xBinWidth);
@@ -58,15 +58,15 @@ export default function BinStats<T>({
   const start: { [index: string]: Bin<T> } = React.useMemo(
     () =>
       _.flatten(
-        _.times(xBins, (xBin) => _.times(yBins, (yBin) => ({ xBin, yBin }))),
+        _.times(xBins, (xBin) => _.times(yBins, (yBin) => ({ xBin, yBin })))
       ).reduce(
         (o, { xBin, yBin }) => ({
           ...o,
           [`${xBin},${yBin}`]: { xBin, yBin, data: [] },
         }),
-        {},
+        {}
       ),
-    [xBins, yBins],
+    [xBins, yBins]
   );
 
   const bins: Bin<T>[] = React.useMemo(
@@ -77,9 +77,9 @@ export default function BinStats<T>({
           const yValue = yStatScale(p);
 
           if (
-            typeof xValue !== 'number' ||
+            typeof xValue !== "number" ||
             !Number.isFinite(xValue) ||
-            typeof yValue !== 'number' ||
+            typeof yValue !== "number" ||
             !Number.isFinite(yValue)
           )
             return bins;
@@ -88,9 +88,9 @@ export default function BinStats<T>({
           const yBin = _.clamp(Math.floor(yValue * yBins), 0, yBins - 1);
           bins[`${xBin},${yBin}`].data.push(p);
           return bins;
-        }, start),
+        }, start)
       ),
-    [points, xBins, yBins, xStatScale, yStatScale, start],
+    [points, xBins, yBins, xStatScale, yStatScale, start]
   );
 
   const binStats = React.useMemo(
@@ -99,7 +99,7 @@ export default function BinStats<T>({
         ...bin,
         ...attrStats(bin.data, summaryDimension),
       })),
-    [bins, summaryDimension],
+    [bins, summaryDimension]
   );
 
   const colorCoordinate = React.useMemo(
@@ -108,9 +108,9 @@ export default function BinStats<T>({
         colorDimension: summaryStat,
         data: binStats,
         colorScheme,
-        nullColor: 'rgba(200,200,200,0.25)',
+        nullColor: "rgba(200,200,200,0.25)",
       }),
-    [summaryStat, binStats, colorScheme],
+    [summaryStat, binStats, colorScheme]
   );
 
   const binWidth = Math.round(width / xBins);
@@ -121,25 +121,25 @@ export default function BinStats<T>({
 
   const xScale = React.useCallback(
     Object.assign((d: Bin<T> | T) => {
-      if (typeof d === 'object' && 'xBin' in d && typeof d['xBin'] === 'number')
+      if (typeof d === "object" && "xBin" in d && typeof d["xBin"] === "number")
         return d.xBin * binWidth;
       const scaled = xStatScale(d as T);
-      if (typeof scaled === 'number') return scaled * actualWidth;
+      if (typeof scaled === "number") return scaled * actualWidth;
       else return 0;
     }, xStatScale),
-    [binWidth, xStatScale, actualWidth],
+    [binWidth, xStatScale, actualWidth]
   );
 
   const yScale = React.useCallback(
     Object.assign((d: Bin<T> | T) => {
-      if (typeof d === 'object' && 'yBin' in d && typeof d['yBin'] === 'number')
+      if (typeof d === "object" && "yBin" in d && typeof d["yBin"] === "number")
         return actualHeight - d.yBin * binHeight;
       const scaled = yStatScale(d as T);
-      if (typeof scaled === 'number')
+      if (typeof scaled === "number")
         return actualHeight - scaled * actualHeight;
       else return 0;
     }, yStatScale),
-    [yStatScale, binHeight, actualHeight],
+    [yStatScale, binHeight, actualHeight]
   );
 
   return (

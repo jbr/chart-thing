@@ -25,12 +25,12 @@ export type Accessor<T> = Attribute<T> | AccessorFunction<T, any>;
 
 export function attributeValue<T, V>(
   datum: T,
-  attr: TypedAccessor<T, V>,
+  attr: TypedAccessor<T, V>
 ): null | V {
-  if (typeof attr === 'function') return attr(datum);
+  if (typeof attr === "function") return attr(datum);
   else if (
-    typeof datum === 'object' &&
-    typeof attr === 'string' &&
+    typeof datum === "object" &&
+    typeof attr === "string" &&
     attr in datum
   )
     return (datum[attr] as unknown) as V;
@@ -39,10 +39,10 @@ export function attributeValue<T, V>(
 
 export function attributeNumber<T>(
   d: T,
-  attribute: TypedAccessor<T, number>,
+  attribute: TypedAccessor<T, number>
 ): number {
   const value = attributeValue(d, attribute);
-  if (typeof value !== 'number') return NaN;
+  if (typeof value !== "number") return NaN;
   else return value;
 }
 
@@ -61,7 +61,7 @@ export interface Stats {
 
 export const attrStats = <T>(
   arr: T[],
-  attr: TypedAccessor<T, number>,
+  attr: TypedAccessor<T, number>
 ): Stats => {
   const sortedValues = arr
     .map((d) => attributeNumber(d, attr))
@@ -79,14 +79,14 @@ export const attrStats = <T>(
     count < 2 || mean === null
       ? null
       : sortedValues.reduce((s, v) => s + Math.pow(v - mean, 2), 0) /
-      (count - 1);
+        (count - 1);
   const stdev = variance ? Math.sqrt(variance) : null;
   const median =
     count === 1
       ? sortedValues[0]
       : count % 2 === 0
-        ? sortedValues[count / 2]
-        : (sortedValues[Math.floor(count / 2)] +
+      ? sortedValues[count / 2]
+      : (sortedValues[Math.floor(count / 2)] +
           sortedValues[Math.ceil(count / 2)]) /
         2;
 
@@ -115,8 +115,8 @@ export const scaleTo = (datum: number | null, range: Stats) =>
   datum === null
     ? null
     : range && range.max !== range.min
-      ? (datum - range.min) / range.range
-      : 0;
+    ? (datum - range.min) / range.range
+    : 0;
 
 export interface Scale<T> extends Stats {
   (datum: T): null | number;
@@ -125,12 +125,12 @@ export interface Scale<T> extends Stats {
 export const attrScale = <T>(
   arr: T[],
   scaleAttr: TypedAccessor<T, number>,
-  override?: Partial<Stats>,
+  override?: Partial<Stats>
 ): Scale<T> => {
   const stats = Object.assign(attrStats(arr, scaleAttr), override);
   const fn = (datum: T) => {
     const value = attributeNumber(datum, scaleAttr);
-    if (typeof value !== 'number') return null;
+    if (typeof value !== "number") return null;
     else return scaleTo(value, stats);
   };
 
@@ -140,7 +140,7 @@ export const attrScale = <T>(
 export const buildScale = <T>(
   statScale: Scale<T>,
   scaleTo: number,
-  invert: boolean = false,
+  invert: boolean = false
 ): Scale<T> =>
   Object.assign(
     (datum: T) => {
@@ -155,12 +155,12 @@ export const buildScale = <T>(
       sum: statScale.sum * scaleTo,
       range: scaleTo,
       mean:
-        typeof statScale.mean === 'number' ? statScale.mean * scaleTo : null,
+        typeof statScale.mean === "number" ? statScale.mean * scaleTo : null,
       variance: null,
       stdev: null,
       median:
-        typeof statScale.median === 'number'
+        typeof statScale.median === "number"
           ? statScale.median * scaleTo
           : null,
-    },
+    }
   );

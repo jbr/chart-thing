@@ -8,7 +8,7 @@ export interface CoordinateContextValue {
 
 const CoordinateContext = React.createContext<CoordinateContextValue>({
   width: 0,
-  height: 0
+  height: 0,
 });
 
 export default CoordinateContext;

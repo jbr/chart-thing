@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface TextWithBackgroundProps {
   fill?: string;
@@ -18,7 +18,7 @@ interface TextWithBackgroundProps {
 }
 
 function asFloat(n: number | string) {
-  if (typeof n === 'string') return parseFloat(n);
+  if (typeof n === "string") return parseFloat(n);
   else return n;
 }
 
@@ -32,13 +32,13 @@ export type TextWithBackgroundRef = {
 export const TextWithBackground = React.forwardRef(
   (props: TextWithBackgroundProps, ref: React.Ref<TextWithBackgroundRef>) => {
     const {
-      fill = 'rgba(255,255,255,0.75)',
+      fill = "rgba(255,255,255,0.75)",
       rx = 5,
       ry = 5,
       children,
       fontSize,
       className,
-      stroke = 'none',
+      stroke = "none",
       strokeWidth = 1,
     } = props;
     const margin = asFloat(props.margin || 0);
@@ -55,13 +55,13 @@ export const TextWithBackground = React.forwardRef(
       () =>
         bbox
           ? {
-            x: bbox.x - padding,
-            y: bbox.y - padding / 2,
-            width: bbox.width + padding * 2,
-            height: bbox.height + padding,
-          }
+              x: bbox.x - padding,
+              y: bbox.y - padding / 2,
+              width: bbox.width + padding * 2,
+              height: bbox.height + padding,
+            }
           : null,
-      [bbox, padding],
+      [bbox, padding]
     );
 
     React.useEffect(() => {
@@ -81,7 +81,7 @@ export const TextWithBackground = React.forwardRef(
     return (
       <g
         transform={`translate(${xTransform}, ${yTransform})`}
-        className={`text-with-background ${className || ''}`}
+        className={`text-with-background ${className || ""}`}
       >
         {bbox ? (
           <rect
@@ -98,7 +98,7 @@ export const TextWithBackground = React.forwardRef(
         </text>
       </g>
     );
-  },
+  }
 );
 
 export default TextWithBackground;

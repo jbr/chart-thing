@@ -1,7 +1,7 @@
-import React from 'react';
-import CoordinateContext from './CoordinateContext';
-import useSize from './useSize';
-import useMapGestures, { GestureHandlers } from './useMapGestures';
+import React from "react";
+import CoordinateContext from "./CoordinateContext";
+import useSize from "./useSize";
+import useMapGestures, { GestureHandlers } from "./useMapGestures";
 
 export type Pads = {
   topPad: number;
@@ -19,43 +19,43 @@ interface SizedSVGProps extends GestureHandlers {
 function padDefaults(
   width: number,
   height: number,
-  props: Partial<Pads>,
+  props: Partial<Pads>
 ): Pads {
   const leftPad =
-    typeof props.leftPad === 'number'
+    typeof props.leftPad === "number"
       ? props.leftPad
       : width < 350
-        ? 50
-        : width < 700
-          ? 75
-          : 100;
+      ? 50
+      : width < 700
+      ? 75
+      : 100;
 
   const rightPad =
-    typeof props.rightPad === 'number'
+    typeof props.rightPad === "number"
       ? props.rightPad
       : width < 350
-        ? 25
-        : width < 700
-          ? 50
-          : 100;
+      ? 25
+      : width < 700
+      ? 50
+      : 100;
 
   const topPad =
-    typeof props.topPad === 'number'
+    typeof props.topPad === "number"
       ? props.topPad
       : height < 350
-        ? 50
-        : height < 700
-          ? 75
-          : 100;
+      ? 50
+      : height < 700
+      ? 75
+      : 100;
 
   const bottomPad =
-    typeof props.bottomPad === 'number'
+    typeof props.bottomPad === "number"
       ? props.bottomPad
       : height < 350
-        ? 50
-        : height < 700
-          ? 75
-          : 100;
+      ? 50
+      : height < 700
+      ? 75
+      : 100;
 
   return { leftPad, rightPad, topPad, bottomPad };
 }
@@ -76,7 +76,7 @@ const SizedSVG = (props: SizedSVGProps & Partial<Pads>) => {
   } else {
     return (
       <div
-        className={`resize-container ${resizing ? 'resizing' : ''}`}
+        className={`resize-container ${resizing ? "resizing" : ""}`}
         ref={ref}
       >
         {resizing ? null : (

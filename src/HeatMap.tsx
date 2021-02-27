@@ -1,24 +1,24 @@
-import React from 'react';
-import { useDataArray } from './DataContext';
-import SizedSVG from './SizedSVG';
-import CoordinateContext from './CoordinateContext';
-import ColorLegend from './ColorLegend';
-import BinStats2d, { Bin } from './BinStats2d';
-import Title from './Title';
-import XAxis from './XAxis';
-import YAxis from './YAxis';
-import { ColorScheme } from './colors';
-import { attributeValue, NumericAttribute, Stats } from './common';
+import React from "react";
+import { useDataArray } from "./DataContext";
+import SizedSVG from "./SizedSVG";
+import CoordinateContext from "./CoordinateContext";
+import ColorLegend from "./ColorLegend";
+import BinStats2d, { Bin } from "./BinStats2d";
+import Title from "./Title";
+import XAxis from "./XAxis";
+import YAxis from "./YAxis";
+import { ColorScheme } from "./colors";
+import { attributeValue, NumericAttribute, Stats } from "./common";
 
 function Squares<T>() {
   const bins = useDataArray<Bin<T>>();
   const { xScale, yScale, binWidth, binHeight, colorScale } = React.useContext(
-    CoordinateContext,
+    CoordinateContext
   );
 
   if (
-    typeof xScale === 'function' &&
-    typeof yScale === 'function' &&
+    typeof xScale === "function" &&
+    typeof yScale === "function" &&
     Array.isArray(bins)
   ) {
     return (
@@ -27,10 +27,10 @@ function Squares<T>() {
           const x = xScale(bin);
           const y = yScale(bin);
           const key = [
-            attributeValue(bin, 'xBin'),
-            attributeValue(bin, 'yBin'),
-          ].join(',');
-          if (typeof x === 'number' && typeof y === 'number') {
+            attributeValue(bin, "xBin"),
+            attributeValue(bin, "yBin"),
+          ].join(",");
+          if (typeof x === "number" && typeof y === "number") {
             return (
               <rect
                 stroke="none"
@@ -62,8 +62,8 @@ function HeatMap<T>({
   x,
   y,
   color,
-  stat = 'count',
-  colorScheme = 'plasma',
+  stat = "count",
+  colorScheme = "plasma",
   children,
 }: HeatMapProps<T>) {
   return (

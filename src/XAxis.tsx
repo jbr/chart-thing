@@ -1,7 +1,7 @@
-import React from 'react';
-import { getDimension } from './Dimensions';
-import CoordinateContext from './CoordinateContext';
-import _ from 'lodash';
+import React from "react";
+import { getDimension } from "./Dimensions";
+import CoordinateContext from "./CoordinateContext";
+import _ from "lodash";
 
 export default function XAxis() {
   const {
@@ -39,7 +39,7 @@ export default function XAxis() {
       <text
         x={xScaleScalar(xStatScale.min) || 0}
         y={height + bottomPad * 0.4}
-        textAnchor={leftPad < 50 ? 'start' : 'middle'}
+        textAnchor={leftPad < 50 ? "start" : "middle"}
         dominantBaseline="hanging"
         className="axis-value"
       >
@@ -49,7 +49,7 @@ export default function XAxis() {
       <text
         x={xScaleScalar(xStatScale.max) || 0}
         y={height + bottomPad * 0.4}
-        textAnchor={rightPad < 50 ? 'end' : 'middle'}
+        textAnchor={rightPad < 50 ? "end" : "middle"}
         dominantBaseline="hanging"
         className="axis-value"
       >

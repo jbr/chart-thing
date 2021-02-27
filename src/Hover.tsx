@@ -1,13 +1,13 @@
-import React from 'react';
+import React from "react";
 import TextWithBackground, {
   TextWithBackgroundRef,
-} from './TextWithBackground';
-import { getDimension } from './Dimensions';
-import _ from 'lodash';
-import { useDataArray } from './DataContext';
-import CoordinateContext from './CoordinateContext';
-import * as vector from './vector';
-import { GestureEvent } from './useMapGestures';
+} from "./TextWithBackground";
+import { getDimension } from "./Dimensions";
+import _ from "lodash";
+import { useDataArray } from "./DataContext";
+import CoordinateContext from "./CoordinateContext";
+import * as vector from "./vector";
+import { GestureEvent } from "./useMapGestures";
 
 export type HoverLabel<T> = (d: T) => string | string[];
 export function Hover<T>({
@@ -32,7 +32,7 @@ export function Hover<T>({
   const colorDimension = getDimension(colorStat as string);
 
   const closest = _.minBy(data, (point) =>
-    vector.distance({ x: xScale(point), y: yScale(point) }, hover),
+    vector.distance({ x: xScale(point), y: yScale(point) }, hover)
   );
 
   if (!closest) return null;
@@ -65,7 +65,7 @@ export function Hover<T>({
           stroke={colorScale(closest)}
           fill="rgba(255,255,255,0.9)"
         >
-          {' '}
+          {" "}
           {hoverLabel ? (
             [hoverLabel(closest)].flat().map((l, i) => (
               <tspan key={i} y={i * 20} x={25}>
@@ -74,7 +74,7 @@ export function Hover<T>({
             ))
           ) : (
             <>
-              {colorDimension.displayLabel}:{' '}
+              {colorDimension.displayLabel}:{" "}
               {colorDimension.labelValue(colorStatValue(closest))}
             </>
           )}

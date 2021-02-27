@@ -1,15 +1,15 @@
-import React from 'react';
-import SizedSVG from './SizedSVG';
-import LineSegments from './LineSegments';
-import Coordinates from './Coordinates';
-import ColorLegend from './ColorLegend';
-import Title from './Title';
-import XAxis from './XAxis';
-import YAxis from './YAxis';
-import { ColorScheme } from './colors';
-import { NumericAttribute, TypedAccessor } from './common';
-import { HoverLabel, Hover } from './Hover';
-import { GestureEvent } from './useMapGestures';
+import React from "react";
+import SizedSVG from "./SizedSVG";
+import LineSegments from "./LineSegments";
+import Coordinates from "./Coordinates";
+import ColorLegend from "./ColorLegend";
+import Title from "./Title";
+import XAxis from "./XAxis";
+import YAxis from "./YAxis";
+import { ColorScheme } from "./colors";
+import { NumericAttribute, TypedAccessor } from "./common";
+import { HoverLabel, Hover } from "./Hover";
+import { GestureEvent } from "./useMapGestures";
 
 interface LineChartProps<T> {
   x: NumericAttribute<T>;

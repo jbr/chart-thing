@@ -1,8 +1,8 @@
-import React from 'react';
-import CoordinateContext from './CoordinateContext';
-import { getDimension } from './Dimensions';
-import { NumericAttribute, attributeValue } from './common';
-import { useDataArray } from './DataContext';
+import React from "react";
+import CoordinateContext from "./CoordinateContext";
+import { getDimension } from "./Dimensions";
+import { NumericAttribute, attributeValue } from "./common";
+import { useDataArray } from "./DataContext";
 
 interface ColorLegendProps<T> {
   top?: boolean;
@@ -44,7 +44,7 @@ export default function CategoricalColorLegend<T>({
     if (!color) return null;
 
     const colorDimension = getDimension(
-      (dimensionName as string) || (color as string),
+      (dimensionName as string) || (color as string)
     );
 
     const lineHeight = 15;
@@ -54,22 +54,22 @@ export default function CategoricalColorLegend<T>({
     const legendWidth =
       Math.max(
         ...[...uniqueValues].map(
-          (v) => colorDimension.labelValue(v as number).length,
-        ),
+          (v) => colorDimension.labelValue(v as number).length
+        )
       ) * 13;
     let top = t;
     let right = r;
 
-    if (bottom && top) throw new Error('legend cannot be both bottom and top');
-    if (left && right) throw new Error('legend cannot be both left and right');
+    if (bottom && top) throw new Error("legend cannot be both bottom and top");
+    if (left && right) throw new Error("legend cannot be both left and right");
     if (!bottom && !top) top = true;
     if (!left && !right) right = true;
 
     const x = left
       ? 0
       : rightPad
-        ? width - legendWidth
-        : width - legendWidth - 25;
+      ? width - legendWidth
+      : width - legendWidth - 25;
 
     const y = top
       ? topPad
@@ -77,7 +77,7 @@ export default function CategoricalColorLegend<T>({
         : 15
       : height + (bottomPad > 0 ? bottomPad / 3 : -25) - legendHeight;
 
-    const bgColor = background === true ? 'rgba(255,255,255,0.8)' : background;
+    const bgColor = background === true ? "rgba(255,255,255,0.8)" : background;
 
     return (
       <g className="categorical-color-legend">

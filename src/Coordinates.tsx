@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   attrScale,
   attributeValue,
@@ -6,12 +6,12 @@ import {
   NumericAttribute,
   attributeNumber,
   TypedAccessor,
-} from './common';
-import { useDataArray } from './DataContext';
-import CoordinateContext, { CoordinateContextValue } from './CoordinateContext';
-import { ColorScheme, DEFAULT_COLOR_SCHEME } from './colors';
-import * as d3_ from 'd3-scale-chromatic';
-import { getDimension } from './Dimensions';
+} from "./common";
+import { useDataArray } from "./DataContext";
+import CoordinateContext, { CoordinateContextValue } from "./CoordinateContext";
+import { ColorScheme, DEFAULT_COLOR_SCHEME } from "./colors";
+import * as d3_ from "d3-scale-chromatic";
+import { getDimension } from "./Dimensions";
 const d3: { [index: string]: any } = { ...d3_ };
 
 export function buildColorCoordinate<T>({
@@ -19,7 +19,7 @@ export function buildColorCoordinate<T>({
   colorDimension,
   data,
   colorScheme,
-  nullColor = 'black',
+  nullColor = "black",
 }: {
   colorScale?: (datum: T) => string;
   colorDimension?: TypedAccessor<T, number>;
@@ -34,10 +34,10 @@ export function buildColorCoordinate<T>({
     const colorStatScale = attrScale(data, colorDimension, dimension.stats);
     const colorStatValue = (datum: T) => attributeNumber(datum, colorDimension);
     const colorScale = (d: T) =>
-      typeof colorStatValue(d) === 'number' && colorScheme
+      typeof colorStatValue(d) === "number" && colorScheme
         ? d3[
-          `interpolate${colorScheme[0].toUpperCase()}${colorScheme.slice(1)}`
-        ](colorStatScale(d))
+            `interpolate${colorScheme[0].toUpperCase()}${colorScheme.slice(1)}`
+          ](colorStatScale(d))
         : nullColor;
     return {
       color: colorDimension,
@@ -111,7 +111,7 @@ export function Coordinates<T>({
         data,
         colorScheme,
       }),
-    [colorScale, color, data, colorScheme],
+    [colorScale, color, data, colorScheme]
   );
 
   const coordinates = React.useMemo(
@@ -130,12 +130,12 @@ export function Coordinates<T>({
       colorCoordinate,
       xDisplayLabel,
       yDisplayLabel,
-    ],
+    ]
   );
 
   return (
     <CoordinateContext.Provider value={coordinates}>
-      {typeof children === 'function' ? children(coordinates) : children}
+      {typeof children === "function" ? children(coordinates) : children}
     </CoordinateContext.Provider>
   );
 }

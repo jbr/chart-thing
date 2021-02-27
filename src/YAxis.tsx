@@ -1,7 +1,7 @@
-import React from 'react';
-import { getDimension } from './Dimensions';
-import CoordinateContext from './CoordinateContext';
-import _ from 'lodash';
+import React from "react";
+import { getDimension } from "./Dimensions";
+import CoordinateContext from "./CoordinateContext";
+import _ from "lodash";
 interface YAxisProps {
   label?: boolean;
 }
@@ -49,7 +49,7 @@ export default function YAxis(props: YAxisProps) {
           dominantBaseline="hanging"
           className="axis-label"
           transform={`rotate(-90 ${labelX} ${yScaleScalar(
-            yStatScale.min + yStatScale.range / 2,
+            yStatScale.min + yStatScale.range / 2
           )})`}
         >
           {yDisplayLabel || dimension.displayLabel}

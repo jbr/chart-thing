@@ -1,12 +1,12 @@
-import React from 'react';
-import { Pads } from './SizedSVG';
-import Vector, * as vector from './vector';
+import React from "react";
+import { Pads } from "./SizedSVG";
+import Vector, * as vector from "./vector";
 
 export type GestureEvent = Vector & { width: number; height: number };
 
 export interface GestureHandlers {
   onZoom?: (
-    vec: (GestureEvent & ({ zoom: number } | { zoomTo: number })) | null,
+    vec: (GestureEvent & ({ zoom: number } | { zoomTo: number })) | null
   ) => void;
   onDrag?: (vec: GestureEvent | null) => void;
   onHover?: (vec: GestureEvent | null) => void;
@@ -33,7 +33,7 @@ const initialState = {
 function reducer(state: GestureState, action: Action): GestureState {
   if (action === null) {
     return initialState;
-  } else if (typeof action === 'function') {
+  } else if (typeof action === "function") {
     return { ...state, ...action(state) };
   } else {
     return { ...state, ...action };
@@ -54,7 +54,7 @@ function useEventHandler<K extends keyof HTMLElementEventMap>(
   ref: React.RefObject<HTMLElement>,
   eventName: K,
   handler: ((event: HTMLElementEventMap[K]) => void) | null,
-  options?: boolean | AddEventListenerOptions,
+  options?: boolean | AddEventListenerOptions
 ) {
   return React.useEffect(() => {
     const current = ref.current;
@@ -72,7 +72,7 @@ function useEventHandler<K extends keyof HTMLElementEventMap>(
 export default function useMapGestures(
   ref: React.RefObject<HTMLElement>,
   gestures: GestureHandlers,
-  dimensions: Pads & { width: number; height: number },
+  dimensions: Pads & { width: number; height: number }
 ): void {
   const { onHover, onDrag, onZoom, onClick } = gestures;
   const { leftPad, topPad, width, height } = dimensions;
@@ -103,7 +103,7 @@ export default function useMapGestures(
         });
       }
     },
-    [onHover, dragStart, onDrag, leftPad, topPad, width, height],
+    [onHover, dragStart, onDrag, leftPad, topPad, width, height]
   );
 
   type LastClick = GestureEvent & { when: number; timer?: number };
@@ -134,7 +134,7 @@ export default function useMapGestures(
         lastClick.current = newClick;
       }
     },
-    [onZoom, width, height, onClick],
+    [onZoom, width, height, onClick]
   );
 
   const onMouseDown = React.useCallback(
@@ -150,7 +150,7 @@ export default function useMapGestures(
       dispatch({ dragStart: ds });
       //          }
     },
-    [dispatch, onHover],
+    [dispatch, onHover]
   );
 
   const up = React.useCallback(
@@ -172,7 +172,7 @@ export default function useMapGestures(
       //            onZoom && onZoom(null);
       //            }
     },
-    [onDrag, dispatch, dragStart, clickHandler],
+    [onDrag, dispatch, dragStart, clickHandler]
   );
 
   // const out = React.useCallback(
@@ -200,12 +200,12 @@ export default function useMapGestures(
       } else if (evt.touches.length === 2) {
         const dragStart = vector.center(
           touchOffset(ref, evt.touches[0]),
-          touchOffset(ref, evt.touches[1]),
+          touchOffset(ref, evt.touches[1])
         );
 
         const initialZoomSize = vector.distance(
           touchOffset(ref, evt.touches[0]),
-          touchOffset(ref, evt.touches[1]),
+          touchOffset(ref, evt.touches[1])
         );
 
         dispatch({
@@ -214,7 +214,7 @@ export default function useMapGestures(
         });
       }
     },
-    [dispatch, ref],
+    [dispatch, ref]
   );
 
   const touchMove = React.useCallback(
@@ -244,7 +244,7 @@ export default function useMapGestures(
         }
       }
     },
-    [dragStart, onDrag, onZoom, initialZoomSize, width, height, ref],
+    [dragStart, onDrag, onZoom, initialZoomSize, width, height, ref]
   );
 
   const onWheel = React.useCallback(
@@ -271,23 +271,23 @@ export default function useMapGestures(
         //                delayZoom();
       }
     },
-    [onZoom, width, height],
+    [onZoom, width, height]
   );
 
-  useEventHandler(ref, 'mousedown', onClick || onDrag ? onMouseDown : null);
-  useEventHandler(ref, 'mouseup', onClick || onDrag ? up : null);
+  useEventHandler(ref, "mousedown", onClick || onDrag ? onMouseDown : null);
+  useEventHandler(ref, "mouseup", onClick || onDrag ? up : null);
   //    useEventHandler(ref, "click", clickHandler);
-  useEventHandler(ref, 'mousemove', onHover || onDrag ? onMouseMove : null);
+  useEventHandler(ref, "mousemove", onHover || onDrag ? onMouseMove : null);
   useEventHandler(
     ref,
-    'touchstart',
-    onZoom || onDrag || onClick ? onTouchStart : null,
+    "touchstart",
+    onZoom || onDrag || onClick ? onTouchStart : null
   );
   useEventHandler(
     ref,
-    'touchmove',
-    onZoom || onDrag || onClick ? touchMove : null,
+    "touchmove",
+    onZoom || onDrag || onClick ? touchMove : null
   );
-  useEventHandler(ref, 'touchend', onZoom || onDrag || onClick ? up : null);
-  useEventHandler(ref, 'wheel', onZoom ? onWheel : null);
+  useEventHandler(ref, "touchend", onZoom || onDrag || onClick ? up : null);
+  useEventHandler(ref, "wheel", onZoom ? onWheel : null);
 }
