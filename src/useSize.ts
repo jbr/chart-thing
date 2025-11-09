@@ -2,7 +2,7 @@ import React from "react";
 import ResizeObserver from "resize-observer-polyfill";
 
 export default function useSize<T extends Element>(): {
-  ref: React.RefObject<T>;
+  ref: React.RefObject<T | null>;
   width: number;
   height: number;
   resizing: boolean;

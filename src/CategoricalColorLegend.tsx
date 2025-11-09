@@ -22,15 +22,8 @@ export default function CategoricalColorLegend<T>({
   dimensionName,
   background = false,
 }: ColorLegendProps<T>) {
-  const {
-    width,
-    height,
-    topPad,
-    bottomPad,
-    rightPad,
-    color,
-    colorScale,
-  } = React.useContext(CoordinateContext);
+  const { width, height, topPad, bottomPad, rightPad, color, colorScale } =
+    React.useContext(CoordinateContext);
 
   const data = useDataArray<T>();
   const uniqueValues = React.useMemo(() => {
@@ -107,7 +100,7 @@ export default function CategoricalColorLegend<T>({
             <text
               x={x + legendPad + 20}
               y={y + legendPad + (i + 1) * lineHeight}
-              textAnchor="left"
+              textAnchor="start"
             >
               {colorDimension.labelValue(v as number)}
             </text>

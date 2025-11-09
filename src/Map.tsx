@@ -32,7 +32,7 @@ interface MapProps<T> {
 
 export function ZoomButtons({ zoomBy }: { zoomBy(z: number): void }) {
   const zoomIn = React.useCallback(
-    (evt) => {
+    (evt: { stopPropagation(): void; preventDefault(): void }) => {
       evt.stopPropagation();
       evt.preventDefault();
       zoomBy(1.2);
@@ -40,7 +40,7 @@ export function ZoomButtons({ zoomBy }: { zoomBy(z: number): void }) {
     [zoomBy]
   );
   const zoomOut = React.useCallback(
-    (evt) => {
+    (evt: { stopPropagation(): void; preventDefault(): void }) => {
       evt.stopPropagation();
       evt.preventDefault();
       zoomBy(1 / 1.2);
@@ -145,15 +145,13 @@ export function Map<T>(props: MapProps<T>) {
     tileProvider,
   } = props;
 
-  const [
-    { staticZoom, dynamicZoom, staticOffset, dynamicOffset },
-    dispatch,
-  ] = React.useReducer(reducer, {
-    staticOffset: { x: 0, y: 0 },
-    dynamicOffset: { x: 0, y: 0 },
-    dynamicZoom: 1,
-    staticZoom: 1,
-  });
+  const [{ staticZoom, dynamicZoom, staticOffset, dynamicOffset }, dispatch] =
+    React.useReducer(reducer, {
+      staticOffset: { x: 0, y: 0 },
+      dynamicOffset: { x: 0, y: 0 },
+      dynamicZoom: 1,
+      staticZoom: 1,
+    });
   const timerRef = React.useRef<number | null>(null);
   const reconcile = React.useCallback(
     () =>

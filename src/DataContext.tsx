@@ -38,7 +38,7 @@ export const DataFrame = ({
   children,
 }: {
   part: string;
-  children: React.ReactNode;
+  children: React.ReactNode | ((data: unknown[]) => React.ReactNode);
 }) => {
   const allData = useDataObject();
 

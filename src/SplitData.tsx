@@ -6,7 +6,7 @@ export function SplitData<T>({
   children,
 }: {
   on: TypedAccessor<T, boolean>;
-  children: React.ReactNode;
+  children: React.ReactNode | ((index: number, section: T[], split: T[][]) => React.ReactNode);
 }) {
   const allData = useDataArray<T>();
   const split = React.useMemo(

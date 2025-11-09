@@ -42,7 +42,7 @@ function reducer(state: GestureState, action: Action): GestureState {
 
 const useGestureReducer = () => React.useReducer(reducer, initialState);
 
-function touchOffset(ref: React.RefObject<HTMLElement>, touch: Touch) {
+function touchOffset(ref: React.RefObject<HTMLElement | null>, touch: Touch) {
   const element = ref.current;
   if (element) {
     const bbox = element.getBoundingClientRect();
@@ -51,7 +51,7 @@ function touchOffset(ref: React.RefObject<HTMLElement>, touch: Touch) {
 }
 
 function useEventHandler<K extends keyof HTMLElementEventMap>(
-  ref: React.RefObject<HTMLElement>,
+  ref: React.RefObject<HTMLElement | null>,
   eventName: K,
   handler: ((event: HTMLElementEventMap[K]) => void) | null,
   options?: boolean | AddEventListenerOptions
@@ -70,7 +70,7 @@ function useEventHandler<K extends keyof HTMLElementEventMap>(
 }
 
 export default function useMapGestures(
-  ref: React.RefObject<HTMLElement>,
+  ref: React.RefObject<HTMLElement | null>,
   gestures: GestureHandlers,
   dimensions: Pads & { width: number; height: number }
 ): void {
@@ -110,7 +110,7 @@ export default function useMapGestures(
   const lastClick = React.useRef<LastClick | null>(null);
   const DOUBLECLICK_TIMEOUT = 500;
   const clickHandler = React.useCallback(
-    (evt) => {
+    (evt: MouseEvent) => {
       const newClick: LastClick = {
         when: Date.now(),
         x: evt.offsetX,
@@ -138,7 +138,7 @@ export default function useMapGestures(
   );
 
   const onMouseDown = React.useCallback(
-    (evt) => {
+    (evt: MouseEvent) => {
       evt.preventDefault();
       evt.stopPropagation();
       const ds = {
@@ -154,7 +154,7 @@ export default function useMapGestures(
   );
 
   const up = React.useCallback(
-    (evt) => {
+    (evt: MouseEvent) => {
       //            if (evt.target === ref.current) {
       evt.preventDefault();
       evt.stopPropagation();
@@ -247,6 +247,17 @@ export default function useMapGestures(
     [dragStart, onDrag, onZoom, initialZoomSize, width, height, ref]
   );
 
+  const touchEnd = React.useCallback(
+    (evt: TouchEvent) => {
+      evt.preventDefault();
+      evt.stopPropagation();
+      dispatch(null);
+      dragStartRef.current = null;
+      onDrag && onDrag(null);
+    },
+    [onDrag, dispatch]
+  );
+
   const onWheel = React.useCallback(
     (evt: WheelEvent) => {
       evt.preventDefault();
@@ -288,6 +299,6 @@ export default function useMapGestures(
     "touchmove",
     onZoom || onDrag || onClick ? touchMove : null
   );
-  useEventHandler(ref, "touchend", onZoom || onDrag || onClick ? up : null);
+  useEventHandler(ref, "touchend", onZoom || onDrag || onClick ? touchEnd : null);
   useEventHandler(ref, "wheel", onZoom ? onWheel : null);
 }

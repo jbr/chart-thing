@@ -22,15 +22,17 @@ function asFloat(n: number | string) {
   else return n;
 }
 
-export type TextWithBackgroundRef = {
+export type TextWithBackgroundBBox = {
   width: number;
   height: number;
   x: number;
   y: number;
-} | null;
+};
 
-export const TextWithBackground = React.forwardRef(
-  (props: TextWithBackgroundProps, ref: React.Ref<TextWithBackgroundRef>) => {
+export type TextWithBackgroundRef = TextWithBackgroundBBox | null;
+
+export const TextWithBackground = React.forwardRef<TextWithBackgroundBBox, TextWithBackgroundProps>(
+  (props, ref) => {
     const {
       fill = "rgba(255,255,255,0.75)",
       rx = 5,
@@ -52,15 +54,12 @@ export const TextWithBackground = React.forwardRef(
 
     React.useImperativeHandle(
       ref,
-      () =>
-        bbox
-          ? {
-              x: bbox.x - padding,
-              y: bbox.y - padding / 2,
-              width: bbox.width + padding * 2,
-              height: bbox.height + padding,
-            }
-          : null,
+      () => ({
+        x: bbox ? bbox.x - padding : 0,
+        y: bbox ? bbox.y - padding / 2 : 0,
+        width: bbox ? bbox.width + padding * 2 : 0,
+        height: bbox ? bbox.height + padding : 0,
+      }),
       [bbox, padding]
     );
 
