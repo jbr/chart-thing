@@ -30,6 +30,7 @@ export function attributeValue<T, V>(
   if (typeof attr === "function") return attr(datum);
   else if (
     typeof datum === "object" &&
+    datum !== null &&
     typeof attr === "string" &&
     attr in datum
   )

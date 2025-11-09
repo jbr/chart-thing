@@ -121,7 +121,7 @@ export default function BinStats<T>({
 
   const xScale = React.useCallback(
     Object.assign((d: Bin<T> | T) => {
-      if (typeof d === "object" && "xBin" in d && typeof d["xBin"] === "number")
+      if (typeof d === "object" && d !== null && "xBin" in d && typeof d["xBin"] === "number")
         return d.xBin * binWidth;
       const scaled = xStatScale(d as T);
       if (typeof scaled === "number") return scaled * actualWidth;
@@ -132,7 +132,7 @@ export default function BinStats<T>({
 
   const yScale = React.useCallback(
     Object.assign((d: Bin<T> | T) => {
-      if (typeof d === "object" && "yBin" in d && typeof d["yBin"] === "number")
+      if (typeof d === "object" && d !== null && "yBin" in d && typeof d["yBin"] === "number")
         return actualHeight - d.yBin * binHeight;
       const scaled = yStatScale(d as T);
       if (typeof scaled === "number")

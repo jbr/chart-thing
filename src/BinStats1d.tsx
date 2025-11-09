@@ -72,6 +72,7 @@ export default function BinStats1d<T>({
     Object.assign((d: T | Bin1d<T>) => {
       if (
         typeof d === "object" &&
+        d !== null &&
         "xBin" in d &&
         typeof d["xBin"] === "number"
       ) {

@@ -22,8 +22,8 @@ export function useDataArray<T>(): T[] {
 
 export function useDataDimensions<T>(): string[] {
   const data = useDataArray<T>();
-  if (data.length) {
-    return Object.keys(data[0]).filter(
+  if (data.length && typeof data[0] === "object" && data[0] !== null) {
+    return Object.keys(data[0] as object).filter(
       (k) =>
         data[0][k as keyof T] !== null &&
         typeof data[0][k as keyof T] !== "undefined"

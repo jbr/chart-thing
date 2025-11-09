@@ -26,16 +26,24 @@
     "@typescript-eslint/parser": "^4.15.2",
     "eslint": "^7.20.0",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "microbundle": "^0.13.0",
-    "typescript": "^4.2.2"
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0"
   },
-  "main": "dist/chart-thing.js",
-  "umd:main": "dist/chart-thing.umd.js",
-  "module": "dist/chart-thing.esm.js",
-  "esmodule": "dist/chart-thing.modern.js",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "build": "microbundle build --tsconfig ./tsconfig.json --jsx React.createElement",
-    "watch": "microbundle watch --tsconfig ./tsconfig.json --jsx React.createElement"
+    "build": "tsup src/index.ts --format cjs,esm --dts --external react",
+    "watch": "tsup src/index.ts --format cjs,esm --dts --external react --watch"
   }
 }
